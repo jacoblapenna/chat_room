@@ -1,0 +1,70 @@
+body {
+  font-family: monospace;
+  color: #03fc17;
+  margin: 0px;
+}
+
+#content_block {
+  position: fixed;
+  bottom: 31px;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  background-color: black;
+  overflow-y: scroll;
+}
+
+#input_block {
+  position: fixed;
+  bottom: 0;
+  left: 0px;
+  right: 0px;
+  height: 30px;
+}
+
+#input_cursor_block {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 40px;
+  height: 30px;
+  color: #03fc17;
+  background-color: black;
+  border-color: white;
+  border-width: 1px;
+  border-style: solid solid none none;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 5px;
+}
+
+#input_text_block {
+  position: fixed;
+  bottom: 0px;
+  left: 41px;
+  width: calc(100% - 41px);
+  height: 30px;
+  color: #5c5c5c;
+  background-color: white;
+  padding: 0px;
+}
+
+#input_form {
+  position: fixed;
+  bottom: 0px;
+  left: 41px;
+  width: calc(100% - 45px);
+  height: 30px;
+}
+
+#chat_input {
+  position: fixed;
+  bottom: 0px;
+  left: 41px;
+  width: calc(100% - 70px);
+  height: 26px;
+  padding-left: 5px;
+  border-style: none;
+}

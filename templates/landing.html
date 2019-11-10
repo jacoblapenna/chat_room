@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <!-- title browser sees -->
+  <title>IRC Landing Page</title>
+
+  <!-- tell browser where styles are -->
+  <link rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static', filename='css/landing_style.css') }}">
+
+  <!-- tell browser where to find the favicon (the little image on the
+  browser tab is called a favicon, feel free to change to something cool) -->
+  <link rel="icon"
+		href="{{ url_for('static', filename='im/favicon.ico') }}">
+
+  <!-- tell browser where to find js support code (this must be stored
+  locally to if chatting on a LAN without iternet connectivity) -->
+  <script src="{{ url_for('static', filename='js/jquery-3.3.1.js') }}">
+  </script>
+
+  <!-- same as above but this is code for js socket protocol -->
+  <script src="{{ url_for('static', filename='js/socket.io.js') }}">
+  </script>
+
+</head>
+<body>
+  <!-- the body of the webpage -->
+
+  <form id="entry_form">
+  <!-- simple form for handle input -->
+
+    <!-- the actual input field -->
+    <!-- it accepts input of type text -->
+    <!-- it has a unique id to be referenced by js functions and styling -->
+    <!-- it says handle as a paceholder until client inputs text -->
+    <!-- it doesn't allow browser to remember input for autocomplete -->
+    Enter: <input type="text"
+                  id="nick_input"
+                  placeholder="handle"
+                  autocomplete="off">
+  </form>
+
+  <script>
+
+    // declared neede global variables
+    var socket =  io.connect(location.origin);
+    var chat_div = document.getElementById("content_block");
+    var content_string = '';
+
+    $("#entry_form").submit(function(e) {
+      // process form data to send to server
+
+      e.preventDefault();
+
+      // get form data and store it as a local string
+      var input_string = document.getElementById("nick_input").value;
+
+      // send string to server, backend is listening for 'new_user'
+      // BUG: firefox doesn't redirect for some reason
+      socket.emit('new_user', nick_input=input_string);
+
+    });
+
+    socket.on("redirect_to_chat_room", function(string) {
+      // redirect to chat room when envoked from backend
+
+      // it goes where the backkend told it (and it puts the lotion on its skin)
+      // possible security issue if arbitrary string injection is possible
+      // just need to socketio.emit('redirect_to_chat_room', 'malicious site')
+      window.location.assign(string);
+
+    });
+
+  </script>
+
+</body>
+</html>

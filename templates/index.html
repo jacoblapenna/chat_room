@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <!-- the title the browser sees -->
+  <title>IRC Chat Page</title>
+
+  <!-- tell browser where to find page styling -->
+  <link rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+  <!-- tell browser where to find favicon
+  (the litel image in the browser tab) -->
+  <link rel="icon"
+		href="{{ url_for('static', filename='im/favicon.ico') }}">
+
+  <!-- tell browser where to find js support code (must be stored locally
+  if on  LAN without internet, otherwise provide href to js support code
+  on internet)-->
+  <script src="{{ url_for('static', filename='js/jquery-3.3.1.js') }}">
+  </script>
+
+  <!-- same as above but for js socket protocol -->
+  <script src="{{ url_for('static', filename='js/socket.io.js') }}">
+  </script>
+
+</head>
+<body>
+
+  <!-- this is a dummy frame, the form below targets this non-visible section
+  of the page to instead of redirecting (the usual behavior of a submit) -->
+  <iframe name="dummy_frame" style="display: none;"></iframe>
+
+  <!-- this is a div container to hold the chat content -->
+  <div id="content_block">
+    <!-- the below "for loop" is syntax from jinja2 templating engine, it works
+    with python's flask to go through a list sent over by the python code and
+    post it to the webpage. Each item goes in a paragraph tag <p></p> -->
+    {% for chat_entry in chat_log %}
+      <!-- this is the chat history from the log -->
+      <p>{{ chat_entry }}</p>
+    {% endfor %}
+    <!-- js appends new chat input here as it receives it -->
+  </div>
+
+  <div id="input_block">
+  <!-- this div contains the chat input form -->
+
+    <div id="input_cursor_block">
+    <!-- this div contains the >>> cursor to prompt chat input -->
+      <p id="cursor">>>></p>
+    </div>
+
+    <div id="input_text_block">
+    <!-- this div contains the form for chat input -->
+      <form id="input_form"
+            onsubmit="process_user_input()"
+            target="dummy_frame">
+      <!-- thae form will call the process_user_input() js function
+      when submit event is detected, it also targets the non-visible
+      dummy frame from above instead of refreshing the whole page which
+      also should keep the cursor in the input field for next chat input -->
+
+        <!-- the actual input field, it takes in type text, has a unique id,
+        has a placeholder of input until client starts typing, and does not
+        remember old chat input for autocomplete -->
+        <input type="text"
+               id="chat_input"
+               placeholder="input"
+               autocomplete="off">
+      </form>
+    </div>
+  </div>
+
+  <script>
+  // javascript (js) starts here
+
+    // declare needed global variables
+    var socket =  io.connect(location.origin);
+    var chat_div = document.getElementById("content_block");
+
+    function process_user_input() {
+      // process form data to send to server
+
+      // get form data and store it as a local string
+      var input_string = document.getElementById("chat_input").value;
+
+      // send string to server, backend is listening for 'new_chat_input'
+      socket.emit('new_chat_input', chat_input=input_string);
+
+      // make form ready for next submittal
+      document.getElementById("input_form").reset()
+
+    }
+
+    socket.on("new_entry", function(json) {
+      // process a chat log entry from the server
+
+      // create a new paragraph tagged element
+      var node = document.createElement("P");
+      // add the desired data to the paragraph
+      var text = document.createTextNode(json.nick + ": " + json.input);
+
+      // build the element and append it to the content_block's content
+      node.appendChild(text);
+      chat_div.appendChild(node)
+
+      // scroll to most recent entry automatically
+      updateScroll()
+
+    });
+
+    function updateScroll(){
+      // scroll chat room to most recent entry
+
+      // perform the scrolling
+      chat_div.scrollTop = chat_div.scrollHeight;
+
+    }
+
+  </script>
+
+</body>
+</html>
