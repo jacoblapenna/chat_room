@@ -19,3 +19,7 @@ input {
   border-radius: 3px;
   border-style: none;
 }
+
+#taken_container {
+  color: red;
+}
