@@ -71,7 +71,8 @@ def serve_up_chat_page():
     raw_chat_log = c.fetchall()
     if len(raw_chat_log): # if there are entries, process them
         for row in raw_chat_log:
-            formatted_log.append(row[2] + ': ' + row[3])
+            t = time.strftime('%H:%M:%S ', time.localtime(row[0]))
+            formatted_log.append(t + row[2] + ': ' + row[3])
 
     # cleanup db connection (nothing to commit)
     conn.close()
