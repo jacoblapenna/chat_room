@@ -33,7 +33,7 @@ Now you can start hacking on the code, but first, make a python environment form
 
 `(chat_env) $ python --version` to enure `python` command maps to the python version installed in your environment
 
-`(chat_env) $ pip -r install requirements.txt` to install needed dependencies
+`(chat_env) $ pip install -r requirements.txt` to install needed dependencies
 
 `(chat_env) $ python irc.py` to start the chat program
 
