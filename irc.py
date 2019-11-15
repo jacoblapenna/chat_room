@@ -88,12 +88,20 @@ def process_new_user(nick_input):
     ip_address = request.remote_addr
 
     # enter/update their credentials to global dict
-    chat_members[ip_address] = nick
+    if nick in chat_members.values(): # if nick is already in use
 
-    # tell client to redirect to chat room
-    client_sid = request.sid
-    url = 'http://' + get_ip_address() + ':8080/chat_room'
-    socketio.emit('redirect_to_chat_room', '/chat_room', room=client_sid)
+        # tell client to pick another
+        socketio.emit('nick_already_in_use')
+
+    else: # if nick isn't already in use
+
+        # associate ip with new nick
+        chat_members[ip_address] = nick
+
+        # tell client to redirect to chat room
+        client_sid = request.sid
+        url = 'http://' + get_ip_address() + ':8080/chat_room'
+        socketio.emit('redirect_to_chat_room', '/chat_room', room=client_sid)
 
 
 @socketio.on('new_chat_input')

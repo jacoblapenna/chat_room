@@ -41,6 +41,10 @@
                   placeholder="handle"
                   autocomplete="off">
   </form>
+  <div id="taken_container">
+  <!-- update the p in this div if user is already taken -->
+    <p id="taken_notice"></p>
+  </div>
 
   <script>
 
@@ -61,6 +65,11 @@
       // BUG: firefox doesn't redirect for some reason
       socket.emit('new_user', nick_input=input_string);
 
+    });
+    
+    socket.on("nick_already_in_use", function() {
+      document.getElementById("taken_notice").innerHTML = 
+        "INVALID: That nick is already taken! Try another..."
     });
 
     socket.on("redirect_to_chat_room", function(string) {
