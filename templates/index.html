@@ -102,15 +102,15 @@
       // format time stamp by first converting to date
       var date = new Date(json.time * 1000);
       // get hours from date and pad with 0 if necassary
-      var hour = ("0" + data.getHours()).slice(-2);
+      var hour = ("0" + date.getHours()).slice(-2);
       // get minutes and pad with 0 if necassary
       var minute = ("0" + date.getMinutes()).slice(-2);
       // get seconds and par with 0 if necassary
       var seconds = ("0" + date.getSeconds()).slice(-2);
       // add the desired data to the paragraph text
       var text = document.createTextNode(
-        hour + ":" + minute + ":" + seconds + 
-        json.nick + ": " + json.input
+          hour + ":" + minute + ":" + seconds + " " +
+          json.nick + ": " + json.input
         );
 
       // build the element and append it to the content_block's content
