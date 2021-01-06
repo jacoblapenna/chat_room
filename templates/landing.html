@@ -17,7 +17,7 @@
 
   <!-- tell browser where to find js support code (this must be stored
   locally to if chatting on a LAN without iternet connectivity) -->
-  <script src="{{ url_for('static', filename='js/jquery-3.3.1.js') }}">
+  <script src="{{ url_for('static', filename='js/jquery-3.5.1.min.js') }}">
   </script>
 
   <!-- same as above but this is code for js socket protocol -->
@@ -66,9 +66,9 @@
       socket.emit('new_user', nick_input=input_string);
 
     });
-    
+
     socket.on("nick_already_in_use", function() {
-      document.getElementById("taken_notice").innerHTML = 
+      document.getElementById("taken_notice").innerHTML =
         "INVALID: That nick is already taken! Try another..."
     });
 
